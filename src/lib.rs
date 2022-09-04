@@ -42,7 +42,7 @@ pub mod tcp {
 		return Ok(stream);
 	}
 
-	//key converter 32B-> 258bit
+	//key converter
 	//--------------------------------------------------------------------
 	fn convert_key(key: &str) -> [u8; 32] {
 		let mut key = key.to_owned();
@@ -52,7 +52,7 @@ pub mod tcp {
 		return key[..32].as_bytes().try_into().unwrap();
 	}
 
-	//cipher 256
+	//cipher aes256cbc
 	//--------------------------------------------------------------------
 	fn enc256(data: Vec::<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
 		let mut ranarr = vec![0u8; 16];
@@ -98,7 +98,7 @@ pub mod tcp {
 		}
 	}
 
-	//secure conn aes128 cbc
+	//secure conn aes256cbc
 	//--------------------------------------------------------------------
 	pub struct SecureTcp {
 		conn: TcpStream,
