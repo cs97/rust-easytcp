@@ -1,10 +1,10 @@
 
 pub mod tcp {
-	extern crate openssl;
-	use openssl::symm::{Cipher, encrypt, decrypt};
-	use openssl::rand::rand_bytes;
+  extern crate openssl;
+  use openssl::symm::{Cipher, encrypt, decrypt};
+  use openssl::rand::rand_bytes;
 
-	use std::io::Write;
+  use std::io::Write;
   use std::io::Read;
   use std::convert::TryInto;
   use std::net::{TcpListener, TcpStream};
