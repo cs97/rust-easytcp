@@ -8,7 +8,7 @@ Cargo.toml
 easytcp = { git = "https://github.com/cs97/rust-easytcp" }
 ```
 
-
+main.rs
 ```
 fn foo() {
   let tcp = easytcp::tcp::simple_connect("127.0.0.1", "6666").unwrap();
