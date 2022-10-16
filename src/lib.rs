@@ -99,10 +99,10 @@ pub mod tcp_openssl {
 	//secure connect/listen 256aes cbc
 	//--------------------------------------------------------------------
 	pub fn listen(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
-		return Ok(SecureTcp{ tcp_conn: crate::tcp::simple_listen(ip, port)?, key: convert_key(set_key)});
+		return Ok(SecureTcp{ tcp_conn: crate::tcp::listen(ip, port)?, key: convert_key(set_key)});
 	}
 	pub fn connect(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
-		return Ok(SecureTcp{ tcp_conn: crate::tcp::simple_connect(ip, port)?, key: convert_key(set_key)});
+		return Ok(SecureTcp{ tcp_conn: crate::tcp::connect(ip, port)?, key: convert_key(set_key)});
 	}
 
 	//secure conn aes256cbc
