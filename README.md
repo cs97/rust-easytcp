@@ -6,6 +6,7 @@ Cargo.toml
 ```
 [dependencies]
 easytcp = { git = "https://github.com/cs97/rust-easytcp" }
+#easytcp = { git = "https://github.com/cs97/rust-easytcp", features = ["tcp_openssl"] }
 ```
 
 main.rs

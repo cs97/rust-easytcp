@@ -41,10 +41,10 @@ pub mod tcp {
 
 	//connect/listen
 	//--------------------------------------------------------------------
-	pub fn simple_listen(ip: &str, port: &str) -> std::io::Result<SimpleTcp> {
+	pub fn listen(ip: &str, port: &str) -> std::io::Result<SimpleTcp> {
 		return Ok(SimpleTcp{ conn: listen_on(ip, port)?});
 	}
-	pub fn simple_connect(ip: &str, port: &str) -> std::io::Result<SimpleTcp> {
+	pub fn connect(ip: &str, port: &str) -> std::io::Result<SimpleTcp> {
 		return Ok(SimpleTcp{ conn: connect_to(ip, port)?});
 	}
 
@@ -98,10 +98,10 @@ pub mod tcp_openssl {
 
 	//secure connect/listen 256aes cbc
 	//--------------------------------------------------------------------
-	pub fn secure_listen(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
+	pub fn listen(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
 		return Ok(SecureTcp{ tcp_conn: crate::tcp::simple_listen(ip, port)?, key: convert_key(set_key)});
 	}
-	pub fn secure_connect(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
+	pub fn connect(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
 		return Ok(SecureTcp{ tcp_conn: crate::tcp::simple_connect(ip, port)?, key: convert_key(set_key)});
 	}
 
