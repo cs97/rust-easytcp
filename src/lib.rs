@@ -61,7 +61,7 @@ pub mod tcp {
 		return Ok(encrypt(Cipher::aes_256_cbc(), key, None, &ranarr)?);
 	}
 	fn dec256(data: Vec::<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
-		let newdata = decrypt(Cipher::aes_128_cbc(), key, None, &data)?;
+		let newdata = decrypt(Cipher::aes_256_cbc(), key, None, &data)?;
 		return Ok(newdata[16..].to_vec());
 	}
 
