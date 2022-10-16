@@ -197,7 +197,7 @@ pub mod tcp_aes_cbc {
 		}
 		pub fn recive(&self) -> std::io::Result<Vec<u8>> {
 			let data: Vec<u8> = dec256cbc(self.tcp_conn.recive()?, self.key)?;
-			return Ok(data.to_vec()[16..]);
+			return Ok(data[16..].to_vec());
 		}
 	}
 
