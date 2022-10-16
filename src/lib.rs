@@ -148,8 +148,8 @@ pub mod tcp_aes_cbc {
 
 	// cipher aes256cbc
 	//--------------------------------------------------------------------
-	fn enc256cbc(block: Vec<u8>, key: [u8; 16]) -> std::io::Result<Vec<u8>> {
-		type Aes256CbcEnc = cbc::Encryptor<aes::Aes128>;
+	fn enc256cbc(block: Vec<u8>, key: [u8; 32]) -> std::io::Result<Vec<u8>> {
+		type Aes256CbcEnc = cbc::Encryptor<aes::Aes256>;
 		let iv = [0x24; 16];
 		//let key: [u8; 32] = *key;
 		let mut buf = vec![0u8; 16+block.len()];
@@ -157,7 +157,7 @@ pub mod tcp_aes_cbc {
 		return Ok(ct.to_vec())
 	}	
 	fn dec256cbc(block: Vec<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
-		type Aes256CbcDec = cbc::Decryptor<aes::Aes128>;
+		type Aes256CbcDec = cbc::Decryptor<aes::Aes256>;
 		let iv = [0x24; 16];
 		let mut buf = vec![0u8; 16+block.len()];
 		let pt = Aes256CbcDec::new(&key.into(), &iv.into()).decrypt_padded_b2b_mut::<Pkcs7>(&block, &mut buf).unwrap();
