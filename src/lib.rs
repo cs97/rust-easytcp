@@ -148,16 +148,6 @@ pub mod tcp_aes_cbc {
 
 	// cipher aes256cbc
 	//--------------------------------------------------------------------
-	fn enc256(data: Vec::<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
-		let mut ranarr = vec![0u8; 16];
-		rand_bytes(&mut ranarr).unwrap();
-		ranarr.extend(data);
-		return Ok(encrypt(Cipher::aes_256_cbc(), key, None, &ranarr)?);
-	}
-	fn dec256(data: Vec::<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
-		let newdata = decrypt(Cipher::aes_256_cbc(), key, None, &data)?;
-		return Ok(newdata[16..].to_vec());
-	}
 	fn enc256cbc(block: Vec<u8>, key: [u8; 32]) -> Vec<u8> {
 		type Aes256CbcEnc = cbc::Encryptor<aes::Aes128>;
 		let iv = [0x24; 16];
