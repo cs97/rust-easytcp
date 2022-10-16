@@ -115,3 +115,65 @@ pub mod tcp {
 	}
 
 }
+
+
+
+
+pub mod tcp_openssl {
+	use crate::tcp::*;
+
+	extern crate openssl;
+	use openssl::symm::{Cipher, encrypt, decrypt};
+	use openssl::rand::rand_bytes;
+
+	//key converter
+	//--------------------------------------------------------------------
+	fn convert_key(key: &str) -> [u8; 32] {
+		let mut key = key.to_owned();
+		while key.len() < 32 {
+			key.push('x');
+		}
+		return key[..32].as_bytes().try_into().unwrap();
+	}
+
+	//cipher aes256cbc
+	//--------------------------------------------------------------------
+	fn enc256(data: Vec::<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
+		let mut ranarr = vec![0u8; 16];
+		rand_bytes(&mut ranarr).unwrap();
+		ranarr.extend(data);
+		return Ok(encrypt(Cipher::aes_256_cbc(), key, None, &ranarr)?);
+	}
+	fn dec256(data: Vec::<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
+		let newdata = decrypt(Cipher::aes_256_cbc(), key, None, &data)?;
+		return Ok(newdata[16..].to_vec());
+	}
+
+	//secure connect/listen 256aes cbc
+	//--------------------------------------------------------------------
+	pub fn secure_listen(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
+		return Ok(SecureTcp{ tcp_conn: crate::tcp::simple_listen(ip, port)?, key: convert_key(set_key)});
+	}
+	pub fn secure_connect(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
+		return Ok(SecureTcp{ tcp_conn: crate::tcp::simple_connect(ip, port)?, key: convert_key(set_key)});
+	}
+
+	//secure conn aes256cbc
+	//--------------------------------------------------------------------
+	pub struct SecureTcp {
+		tcp_conn: crate::tcp::SimpleTcp,
+		key: [u8; 32],
+	}
+	impl SecureTcp {
+		pub fn send(&self, data: Vec::<u8>) -> std::io::Result<()> {
+			//send_vec(&self.conn, enc256(data, &self.key)?)?;
+			let _ = &self.tcp_conn.send(enc256(data, &self.key)?)?;
+			return Ok(());
+		}
+		pub fn recive(&self) -> std::io::Result<Vec<u8>> {
+			//return Ok(dec256(recive_vec(&self.conn)?, &self.key)?);
+			return Ok(dec256(self.tcp_conn.recive()?, &self.key)?);
+		}
+	}
+
+}
