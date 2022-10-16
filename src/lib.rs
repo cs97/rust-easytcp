@@ -190,7 +190,7 @@ pub mod tcp_aes_cbc {
 	}
 	impl SecureTcp {
 		pub fn send(&self, data: Vec::<u8>) -> std::io::Result<()> {
-			let block = rand_block();
+			let mut block = rand_block();
 			block.extend(data);
 			let _ = &self.tcp_conn.send(enc256cbc(block, self.key)?)?;
 			return Ok(());
