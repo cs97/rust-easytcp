@@ -118,7 +118,7 @@ pub mod tcp {
 
 
 
-
+#[cfg(feature = "openssl")]
 pub mod tcp_openssl {
 	extern crate openssl;
 	use openssl::symm::{Cipher, encrypt, decrypt};
