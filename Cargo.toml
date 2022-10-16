@@ -13,4 +13,4 @@ openssl = "0.10.42"
 
 
 [features]
-tcp_openssl = []
+tcp_openssl = [dep:openssl]
