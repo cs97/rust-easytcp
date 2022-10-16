@@ -120,8 +120,6 @@ pub mod tcp {
 
 
 pub mod tcp_openssl {
-	use crate::tcp::*;
-
 	extern crate openssl;
 	use openssl::symm::{Cipher, encrypt, decrypt};
 	use openssl::rand::rand_bytes;
