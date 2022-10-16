@@ -159,7 +159,6 @@ pub mod tcp_aes_cbc {
 	// cipher aes256cbc
 	//--------------------------------------------------------------------
 	fn enc256cbc(block: Vec<u8>, key: [u8; 32]) -> std::io::Result<Vec<u8>> {
-		let block = rand_block().extend(block);
 		type Aes256CbcEnc = cbc::Encryptor<aes::Aes256>;
 		let iv = [0x24; 16];
 		let mut buf = vec![0u8; 16+block.len()];
@@ -191,6 +190,7 @@ pub mod tcp_aes_cbc {
 	}
 	impl SecureTcp {
 		pub fn send(&self, data: Vec::<u8>) -> std::io::Result<()> {
+			//let block = rand_block().extend(block);
 			let _ = &self.tcp_conn.send(enc256cbc(data, self.key)?)?;
 			return Ok(());
 		}
