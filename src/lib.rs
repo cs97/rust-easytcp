@@ -146,12 +146,22 @@ pub mod tcp_aes_cbc {
 		return key[..32].as_bytes().try_into().unwrap();
 	}
 
+	// rand block
+	//--------------------------------------------------------------------
+	fn rand_block() -> Vec<u8> {
+		let mut ranarr = vec![0u8; 16];
+		for x in 0..16{
+			 ranarr[x] = rand::random::<u8>();
+		}
+		return ranarr
+	}
+
 	// cipher aes256cbc
 	//--------------------------------------------------------------------
 	fn enc256cbc(block: Vec<u8>, key: [u8; 32]) -> std::io::Result<Vec<u8>> {
+		let block = rand_block().extend(block)
 		type Aes256CbcEnc = cbc::Encryptor<aes::Aes256>;
 		let iv = [0x24; 16];
-		//let key: [u8; 32] = *key;
 		let mut buf = vec![0u8; 16+block.len()];
 		let ct = Aes256CbcEnc::new(&key.into(), &iv.into()).encrypt_padded_b2b_mut::<Pkcs7>(&block, &mut buf).unwrap();
 		return Ok(ct.to_vec())
