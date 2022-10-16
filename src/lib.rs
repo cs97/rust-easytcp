@@ -1,8 +1,8 @@
 
 pub mod tcp {
-  extern crate openssl;
-  use openssl::symm::{Cipher, encrypt, decrypt};
-  use openssl::rand::rand_bytes;
+//  extern crate openssl;
+//  use openssl::symm::{Cipher, encrypt, decrypt};
+//  use openssl::rand::rand_bytes;
 
   use std::io::Write;
   use std::io::Read;
@@ -44,7 +44,7 @@ pub mod tcp {
 
 	//key converter
 	//--------------------------------------------------------------------
-	fn convert_key(key: &str) -> [u8; 32] {
+/*	fn convert_key(key: &str) -> [u8; 32] {
 		let mut key = key.to_owned();
 		while key.len() < 32 {
 			key.push('x');
@@ -64,7 +64,7 @@ pub mod tcp {
 		let newdata = decrypt(Cipher::aes_256_cbc(), key, None, &data)?;
 		return Ok(newdata[16..].to_vec());
 	}
-
+*/
 	//connect/listen
 	//--------------------------------------------------------------------
 	pub fn simple_listen(ip: &str, port: &str) -> std::io::Result<SimpleTcp> {
@@ -76,13 +76,13 @@ pub mod tcp {
 
 	//secure connect/listen 128aes cbc
 	//--------------------------------------------------------------------
-	pub fn secure_listen(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
+/*	pub fn secure_listen(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
 		return Ok(SecureTcp{ conn: listen_on(ip, port)?, key: convert_key(set_key)});
 	}
 	pub fn secure_connect(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
 		return Ok(SecureTcp{ conn: connect_to(ip, port)?, key: convert_key(set_key)});
 	}
-	
+*/	
 	//simple conn
 	//--------------------------------------------------------------------
 	pub struct SimpleTcp {
@@ -100,7 +100,7 @@ pub mod tcp {
 
 	//secure conn aes256cbc
 	//--------------------------------------------------------------------
-	pub struct SecureTcp {
+/*	pub struct SecureTcp {
 		conn: TcpStream,
 		key: [u8; 32],
 	}
@@ -113,7 +113,7 @@ pub mod tcp {
 			return Ok(dec256(recive_vec(&self.conn)?, &self.key)?);
 		}
 	}
-
+*/
 }
 
 
