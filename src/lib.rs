@@ -1,4 +1,4 @@
-
+// tcp
 pub mod tcp {
 
   use std::io::Write;
@@ -6,7 +6,7 @@ pub mod tcp {
   use std::convert::TryInto;
   use std::net::{TcpListener, TcpStream};
 
-	//tcp
+	// tcp
 	//--------------------------------------------------------------------
 	fn recive_vec(mut stream: &TcpStream) -> std::io::Result<Vec<u8>> {
 		let mut package_len = [0 as u8; 8];
@@ -39,7 +39,7 @@ pub mod tcp {
 		return Ok(stream);
 	}
 
-	//connect/listen
+	// connect/listen
 	//--------------------------------------------------------------------
 	pub fn listen(ip: &str, port: &str) -> std::io::Result<SimpleTcp> {
 		return Ok(SimpleTcp{ conn: listen_on(ip, port)?});
@@ -48,7 +48,7 @@ pub mod tcp {
 		return Ok(SimpleTcp{ conn: connect_to(ip, port)?});
 	}
 
-	//simple conn
+	// simple conn
 	//--------------------------------------------------------------------
 	pub struct SimpleTcp {
 		conn: TcpStream,
@@ -65,7 +65,7 @@ pub mod tcp {
 
 }
 
-
+// tcp_openssl
 #[cfg(feature = "tcp_openssl")]
 pub mod tcp_openssl {
 	
@@ -73,7 +73,7 @@ pub mod tcp_openssl {
 	use openssl::symm::{Cipher, encrypt, decrypt};
 	use openssl::rand::rand_bytes;
 
-	//key converter
+	// key converter
 	//--------------------------------------------------------------------
 	fn convert_key(key: &str) -> [u8; 32] {
 		let mut key = key.to_owned();
@@ -83,7 +83,7 @@ pub mod tcp_openssl {
 		return key[..32].as_bytes().try_into().unwrap();
 	}
 
-	//cipher aes256cbc
+	// cipher aes256cbc
 	//--------------------------------------------------------------------
 	fn enc256(data: Vec::<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
 		let mut ranarr = vec![0u8; 16];
@@ -96,7 +96,7 @@ pub mod tcp_openssl {
 		return Ok(newdata[16..].to_vec());
 	}
 
-	//secure connect/listen 256aes cbc
+	// secure connect/listen 256aes cbc
 	//--------------------------------------------------------------------
 	pub fn listen(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
 		return Ok(SecureTcp{ tcp_conn: crate::tcp::listen(ip, port)?, key: convert_key(set_key)});
@@ -105,7 +105,7 @@ pub mod tcp_openssl {
 		return Ok(SecureTcp{ tcp_conn: crate::tcp::connect(ip, port)?, key: convert_key(set_key)});
 	}
 
-	//secure conn aes256cbc
+	// secure conn aes256cbc
 	//--------------------------------------------------------------------
 	pub struct SecureTcp {
 		tcp_conn: crate::tcp::SimpleTcp,
@@ -124,3 +124,5 @@ pub mod tcp_openssl {
 	}
 
 }
+
+
