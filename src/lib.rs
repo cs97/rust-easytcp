@@ -1,8 +1,5 @@
 
 pub mod tcp {
-//  extern crate openssl;
-//  use openssl::symm::{Cipher, encrypt, decrypt};
-//  use openssl::rand::rand_bytes;
 
   use std::io::Write;
   use std::io::Read;
@@ -42,29 +39,6 @@ pub mod tcp {
 		return Ok(stream);
 	}
 
-	//key converter
-	//--------------------------------------------------------------------
-/*	fn convert_key(key: &str) -> [u8; 32] {
-		let mut key = key.to_owned();
-		while key.len() < 32 {
-			key.push('x');
-		}
-		return key[..32].as_bytes().try_into().unwrap();
-	}
-
-	//cipher aes256cbc
-	//--------------------------------------------------------------------
-	fn enc256(data: Vec::<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
-		let mut ranarr = vec![0u8; 16];
-		rand_bytes(&mut ranarr).unwrap();
-		ranarr.extend(data);
-		return Ok(encrypt(Cipher::aes_256_cbc(), key, None, &ranarr)?);
-	}
-	fn dec256(data: Vec::<u8>, key: &[u8]) -> std::io::Result<Vec<u8>> {
-		let newdata = decrypt(Cipher::aes_256_cbc(), key, None, &data)?;
-		return Ok(newdata[16..].to_vec());
-	}
-*/
 	//connect/listen
 	//--------------------------------------------------------------------
 	pub fn simple_listen(ip: &str, port: &str) -> std::io::Result<SimpleTcp> {
@@ -74,15 +48,6 @@ pub mod tcp {
 		return Ok(SimpleTcp{ conn: connect_to(ip, port)?});
 	}
 
-	//secure connect/listen 128aes cbc
-	//--------------------------------------------------------------------
-/*	pub fn secure_listen(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
-		return Ok(SecureTcp{ conn: listen_on(ip, port)?, key: convert_key(set_key)});
-	}
-	pub fn secure_connect(ip: &str, port: &str, set_key: &str) -> std::io::Result<SecureTcp> {
-		return Ok(SecureTcp{ conn: connect_to(ip, port)?, key: convert_key(set_key)});
-	}
-*/	
 	//simple conn
 	//--------------------------------------------------------------------
 	pub struct SimpleTcp {
@@ -98,24 +63,7 @@ pub mod tcp {
 		}
 	}
 
-	//secure conn aes256cbc
-	//--------------------------------------------------------------------
-/*	pub struct SecureTcp {
-		conn: TcpStream,
-		key: [u8; 32],
-	}
-	impl SecureTcp {
-		pub fn send(&self, data: Vec::<u8>) -> std::io::Result<()> {
-			send_vec(&self.conn, enc256(data, &self.key)?)?;
-			return Ok(());
-		}
-		pub fn recive(&self) -> std::io::Result<Vec<u8>> {
-			return Ok(dec256(recive_vec(&self.conn)?, &self.key)?);
-		}
-	}
-*/
 }
-
 
 
 #[cfg(feature = "tcp_openssl")]
