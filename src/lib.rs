@@ -151,7 +151,7 @@ pub mod tcp_aes_cbc {
 	fn enc256cbc(block: Vec<u8>, key: &[u8; 32]) -> std::io::Result<Vec<u8>> {
 		type Aes256CbcEnc = cbc::Encryptor<aes::Aes128>;
 		let iv = [0x24; 16];
-		let key: [u8; 32] = key;
+		let key: [u8; 32] = *key;
 		let mut buf = vec![0u8; 16+block.len()];
 		let ct = Aes256CbcEnc::new(&key.into(), &iv.into()).encrypt_padded_b2b_mut::<Pkcs7>(&block, &mut buf).unwrap();
 		return Ok(ct.to_vec())
